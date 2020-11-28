@@ -1,8 +1,18 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  return <Route {...rest} render={props => <Component {...props} />} />;
+  const isAuthenticated = useAuth();
+
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        isAuthenticated ? <Component {...props} /> : <Redirect to="/" />
+      }
+    />
+  );
 };
 
 export default PrivateRoute;
