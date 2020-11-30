@@ -4,38 +4,58 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import PrivateRoute from '../components/PrivateRoute';
 import { AuthContext } from '../contexts/AuthContext';
 
-let FakeComponent;
-let testRoute;
+// put redirect string into explainer variable
+
+let PrivateComponent;
+let testPrivateRoute;
 
 describe('The PrivateRoute component', () => {
   beforeEach(() => {
-    FakeComponent = () => <h1>Fake Component</h1>;
-    testRoute = '/test';
-    window.history.pushState({}, 'Test', testRoute);
+    PrivateComponent = () => <h1>Private Component</h1>;
+    testPrivateRoute = '/test';
+    window.history.pushState({}, 'Test', testPrivateRoute);
   });
 
-  test('should render the component passed down to it, on the route passed to it when authenticated', () => {
-    render(
-      <AuthContext.Provider value={true}>
-        <Router>
-          <PrivateRoute path={testRoute} component={FakeComponent} />
-        </Router>
-      </AuthContext.Provider>
-    );
-
-    expect(screen.getByRole('heading')).toHaveTextContent(/Fake Component/i);
+  describe('when authenticated', () => {
+    beforeEach(() => {
+      render(
+        <AuthContext.Provider value={true}>
+          <Router>
+            <PrivateRoute
+              path={testPrivateRoute}
+              component={PrivateComponent}
+            />
+          </Router>
+        </AuthContext.Provider>
+      );
+    });
+    test('should render the component passed down to it, on the route passed to it', () => {
+      expect(screen.getByRole('heading')).toHaveTextContent(
+        /Private Component/i
+      );
+    });
   });
 
-  test('should redirect to the home route if not authenticated', () => {
-    render(
-      <AuthContext.Provider value={false}>
-        <Router>
-          <PrivateRoute path={testRoute} component={FakeComponent} />
-        </Router>
-      </AuthContext.Provider>
-    );
+  describe('when not authenticated', () => {
+    beforeEach(() => {
+      render(
+        <AuthContext.Provider value={false}>
+          <Router>
+            <PrivateRoute
+              path={testPrivateRoute}
+              component={PrivateComponent}
+            />
+          </Router>
+        </AuthContext.Provider>
+      );
+    });
+    test('should redirect to the home route', () => {
+      const redirectRoute = '/';
+      expect(window.location.pathname).toBe(redirectRoute);
+    });
 
-    expect(screen.queryByText(/Fake Component/i)).not.toBeInTheDocument();
-    expect(window.location.pathname).toBe('/');
+    test('should not show the private component', () => {
+      expect(screen.queryByText(/Private Component/i)).not.toBeInTheDocument();
+    });
   });
 });
