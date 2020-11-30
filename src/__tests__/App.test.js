@@ -2,12 +2,14 @@ import { render, screen } from '@testing-library/react';
 import App from '../App';
 import * as AuthContext from '../contexts/AuthContext';
 
+jest.mock('../components/Home', () => () => <h1>Test home</h1>);
+
 test('renders home screen on "/" route', () => {
   window.history.pushState({}, 'Test', '/');
 
   render(<App />);
 
-  expect(screen.getByRole('heading')).toHaveTextContent(/home screen/i);
+  expect(screen.getByRole('heading')).toHaveTextContent(/test home/i);
 });
 
 describe('when authenticated', () => {
@@ -38,6 +40,6 @@ describe('when not authenticated', () => {
   test('renders the home screen on the "/admin" route', () => {
     render(<App />);
 
-    expect(screen.getByRole('heading')).toHaveTextContent(/home screen/i);
+    expect(screen.getByRole('heading')).toHaveTextContent(/test home/i);
   });
 });
