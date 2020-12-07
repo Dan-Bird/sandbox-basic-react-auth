@@ -3,6 +3,7 @@ import App from '../App';
 import * as AuthContext from '../contexts/AuthContext';
 
 jest.mock('../components/Home', () => () => <h1>Test home</h1>);
+jest.mock('../components/Login', () => () => <h1>Test Login</h1>);
 
 test('renders home screen on "/" route', () => {
   window.history.pushState({}, 'Test', '/');
@@ -37,9 +38,9 @@ describe('when not authenticated', () => {
     jest.restoreAllMocks();
   });
 
-  test('renders the home screen on the "/admin" route', () => {
+  test('renders the Login screen on the "/admin" route', () => {
     render(<App />);
 
-    expect(screen.getByRole('heading')).toHaveTextContent(/test home/i);
+    expect(screen.getByRole('heading')).toHaveTextContent(/test Login/i);
   });
 });

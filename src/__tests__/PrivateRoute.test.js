@@ -50,7 +50,7 @@ describe('The PrivateRoute component', () => {
       );
     });
     test('should redirect to the home route', () => {
-      const redirectRoute = '/';
+      const redirectRoute = '/login';
       expect(window.location.pathname).toBe(redirectRoute);
     });
 
