@@ -1,12 +1,10 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Login from '../components/Login';
 
-jest.mock('../components/SignUp', () => () => <h1>Test SignUp</h1>);
-
 describe('Login component', () => {
-  it('should link through to the SignUp page', async () => {
+  it('should link through to the SignUp page', () => {
     render(
       <Router>
         <Login />
