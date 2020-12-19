@@ -41,6 +41,7 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/dom": "^7.28.1"
+    "@testing-library/dom": "^7.28.1",
+    "axios": "^0.21.0"
   }
 }

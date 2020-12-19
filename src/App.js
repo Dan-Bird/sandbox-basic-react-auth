@@ -1,3 +1,4 @@
+import { useState, useCallback } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Home from './components/Home';
@@ -8,8 +9,18 @@ import Login from './components/Login';
 import SignUp from './components/SignUp';
 
 function App() {
+  const existingTokens = JSON.parse(localStorage.getItem('tokens'));
+  const [authTokens, setAuthTokens] = useState(existingTokens);
+  const setTokens = useCallback(
+    data => {
+      localStorage.setItem('tokens', JSON.stringify(data));
+      setAuthTokens(data);
+    },
+    [setAuthTokens]
+  );
+
   return (
-    <AuthContext.Provider value={false}>
+    <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
       <Router>
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
